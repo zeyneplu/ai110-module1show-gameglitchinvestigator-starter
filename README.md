@@ -1,38 +1,24 @@
-# 🎮 Game Glitch Investigator: The Impossible Guesser
+# 🎮 Game Glitch Investigator
 
-## 🚨 The Situation
+## Demo
 
-You asked an AI to build a simple "Number Guessing Game" using Streamlit.
-It wrote the code, ran away, and now the game is unplayable. 
+The game is a number-guessing app built with Streamlit. Players select a difficulty (Easy/Normal/Hard), then guess a secret number within a limited number of attempts. The app gives directional hints and tracks score.
 
-- You can't win.
-- The hints lie to you.
-- The secret number seems to have commitment issues.
+## Document Your Experience
 
-## 🛠️ Setup
+### Bugs Found and Fixed
+- Reversed hint messages in `check_guess` (said "Go HIGHER" when guess was too high)
+- String/int type mismatch on even-numbered attempts causing wrong comparisons
+- Hard difficulty had a smaller range than Normal (1-50 vs 1-100)
+- Score formula double-penalized players and inconsistently handled wrong guesses
+- Attempt counter started at 1 instead of 0
+- New Game button didn't reset game status, score, or history
+- UI displayed hardcoded range "1 to 100" instead of actual difficulty range
 
-1. Install dependencies: `pip install -r requirements.txt`
-2. Run the broken app: `python -m streamlit run app.py`
+### AI Collaboration
+I used Claude to help identify and understand each bug's root cause. The AI was helpful for tracing logic errors (like the swapped hints), but the original AI-generated code also contained the bugs in the first place — including a misleading `try/except` workaround that masked a deeper type-mismatch issue. I made the final call on each fix and verified through pytest and manual playtesting.
 
-## 🕵️‍♂️ Your Mission
-
-1. **Play the game.** Open the "Developer Debug Info" tab in the app to see the secret number. Try to win.
-2. **Find the State Bug.** Why does the secret number change every time you click "Submit"? Ask ChatGPT: *"How do I keep a variable from resetting in Streamlit when I click a button?"*
-3. **Fix the Logic.** The hints ("Higher/Lower") are wrong. Fix them.
-4. **Refactor & Test.** - Move the logic into `logic_utils.py`.
-   - Run `pytest` in your terminal.
-   - Keep fixing until all tests pass!
-
-## 📝 Document Your Experience
-
-- [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
-
-## 📸 Demo
-
-- [ ] [Insert a screenshot of your fixed, winning game here]
-
-## 🚀 Stretch Features
+### Testing
+6 pytest cases covering core game logic all pass. Manual testing confirmed the game runs correctly across all three difficulty levels.
 
 - [ ] [If you choose to complete Challenge 4, insert a screenshot of your Enhanced Game UI here]
