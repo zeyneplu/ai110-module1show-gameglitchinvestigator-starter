@@ -8,6 +8,26 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 - List at least two concrete bugs you noticed at the start  
   (for example: "the secret number kept changing" or "the hints were backwards").
 
+  Bug Hunt #1 — Read check_guess() carefully:
+python
+if guess > secret:
+    return "Too High", "📈 Go HIGHER!"
+else:
+    return "Too Low", "📉 Go LOWER!"
+If your guess is 70 and the secret is 50, your guess is too high. The outcome string says "Too High" — that's correct. But what does the hint message tell the player to do? Read that emoji message again. See the problem?
+Bug Hunt #2 — Look at what happens on even-numbered attempts:
+python
+if st.session_state.attempts % 2 == 0:
+    secret = str(st.session_state.secret)
+else:
+    secret = st.session_state.secret
+On every other guess, the secret number gets turned into a string. Then check_guess compares an integer guess to a string secret. In Python, 50 > "42" throws a TypeError — and look at what the except TypeError block does. It compares strings, where "9" > "50" is True because string comparison is character-by-character. That's going to produce wrong hints on even attempts.
+Bug Hunt #3 — Compare the difficulties:
+python
+"Easy":   1 to 20
+"Normal": 1 to 100
+"Hard":   1 to 50
+
 ---
 
 ## 2. How did you use AI as a teammate?
